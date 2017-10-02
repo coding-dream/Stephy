@@ -1,1 +1,4 @@
 include ':app', ':imagemanager'
+
+include 'SDK_imagemanager'
+project(':SDK_imagemanager').projectDir = new File('./libaar')

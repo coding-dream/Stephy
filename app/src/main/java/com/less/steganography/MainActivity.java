@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.less.imagemanager.FileCallback;
 import com.less.imagemanager.ImageManager;
 import com.less.imagemanager.StringCallback;
-
 import java.io.File;
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -36,10 +35,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.btn_encrypt:
-				String message = et_input.getText().toString();
+				String text = et_input.getText().toString();
 				// init
 				Bitmap bitmap_encrypt = BitmapFactory.decodeResource(getResources(), R.raw.meinv);
-				ImageManager.getInstance().encrypt(message, bitmap_encrypt, path, new FileCallback() {
+				ImageManager.getInstance().encrypt(text, bitmap_encrypt, path, new FileCallback() {
 					@Override
 					public void done(File imageFile) {
 						Toast.makeText(MainActivity.this, "加密完成-> " + imageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
@@ -59,7 +58,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 			case R.id.btn_avaliable:
 				Bitmap tempBitmap = BitmapFactory.decodeResource(getResources(),R.raw.meinv);
 				int size = ImageManager.getInstance().avaliableByteSize(tempBitmap);// 可写字节数
-				Toast.makeText(this, "可写大小: " + size/3 + " 个UTF8中文字", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "可写大小: " + size + " 个byte", Toast.LENGTH_SHORT).show();
 				break;
 		}
 	}
