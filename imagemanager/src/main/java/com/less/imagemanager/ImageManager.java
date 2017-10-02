@@ -16,6 +16,8 @@ import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import static android.R.id.message;
 import static com.less.imagemanager.util.Bytes.bytesToLong;
 
 /**
@@ -61,18 +63,19 @@ public class ImageManager {
     public native int doEncrypt(Bitmap bitmap,byte[] header,byte[] data);
     public native byte[] doDecrypt(Bitmap bitmap, int offset, int length);
 
-    /**
-     * 加密
-     */
-    public void encrypt(final String message, final Bitmap inBitmap, final String savePath, final Callback callback) {
+    public void encrypt(String message, Bitmap inBitmap, String savePath, Callback callback) {
+        encrypt(message.getBytes(),inBitmap,savePath,callback);
+    }
+
+    public void encrypt(final byte[] bytes, final Bitmap inBitmap, final String savePath, final Callback callback) {
         executorWork.execute(new Runnable() {
             @Override
             public void run() {
                 // 压缩数据(注意,只压缩message,不压缩header)
-                byte[] data = Zips.compress(message.getBytes());
+                byte[] data = Zips.compress(bytes);
                 // 加密数据
                 data = DESedeCoder.encrypt(data, base64SecretKey);
-                checkSave(message,inBitmap);
+                checkSave(bytes,inBitmap);
 
                 byte[] header = createLenToHeader(data.length);
 
@@ -114,21 +117,16 @@ public class ImageManager {
 
     /**
      * 检测是否图片大小是否可存入信息
-     * @param message
+     * @param bytes
      */
-    private void checkSave(String message,Bitmap bitmap) {
-        int need = DESedeCoder.encrypt(Zips.compress(message.getBytes()),base64SecretKey).length;// byte[]
+    private void checkSave(byte[] bytes,Bitmap bitmap) {
+        int need = DESedeCoder.encrypt(Zips.compress(bytes),base64SecretKey).length;// byte[]
         int maxSaveLen = avaliableByteSize(bitmap);// byte[]
         if(need > maxSaveLen){
             throw new IllegalArgumentException("图片的内存太小，不能保存当前数据");
         }
     }
 
-    /**
-     * 解密
-     * @param bitmap
-     * @return
-     */
     public void decrypt(final Bitmap bitmap, final Callback callback) {
         executorWork.execute(new Runnable() {
             @Override
