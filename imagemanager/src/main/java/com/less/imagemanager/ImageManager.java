@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 
 import com.less.imagemanager.util.Bytes;
 import com.less.imagemanager.util.DESedeCoder;
-import com.less.imagemanager.util.L;
 import com.less.imagemanager.util.Zips;
 
 import java.io.ByteArrayOutputStream;
@@ -25,7 +24,7 @@ import static com.less.imagemanager.util.Bytes.bytesToLong;
 public class ImageManager {
     private static ImageManager instance;
 
-    private String base64SecretKey;
+    private String base64SecretKey = null;
 
     private static final int HEADER_SIZE = Long.SIZE / Byte.SIZE + 4;// start(2 byte) ==> long length(8byte) <== end(2 byte)
 
@@ -45,7 +44,9 @@ public class ImageManager {
     }
 
     public ImageManager(){
-        base64SecretKey = "OBUlShoEx9blc6TLdQubYVKF02TCRXpb";
+        if (base64SecretKey == null) {
+            base64SecretKey = "OBUlShoEx9blc6TLdQubYVKF02TCRXpb";
+        }
     }
 
     public static ImageManager getInstance(){
@@ -61,6 +62,14 @@ public class ImageManager {
 
     private native int doEncrypt(Bitmap bitmap,byte[] header,byte[] data);
     private native byte[] doDecrypt(Bitmap bitmap, int offset, int length);
+
+    public void setKey(String key){
+        this.base64SecretKey = key;
+    }
+
+    public static String createKey(){
+        return DESedeCoder.initKey();
+    }
 
     public void encrypt(String message, Bitmap inBitmap, String savePath, Callback callback) {
         encrypt(message.getBytes(),inBitmap,savePath,callback);

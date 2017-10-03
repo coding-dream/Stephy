@@ -19,6 +19,7 @@ import java.io.File;
 public class MainActivity extends Activity implements View.OnClickListener {
 	private String outEncryptImg = Environment.getExternalStorageDirectory().getAbsolutePath() + "/encrypt.png";
 	private EditText et_input ;
+	private String secretKey = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		// 测试一段长文本
 		String text = FileUtils.readRawString(getResources(),R.raw.msg);
 		et_input.setText(text);
+		secretKey = ImageManager.createKey();
+		toast("!!!---> please must save the secretKey <---!!!");
+
+		ImageManager.getInstance().setKey(secretKey);
 	}
 
 	@Override
