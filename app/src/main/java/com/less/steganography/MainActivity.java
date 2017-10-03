@@ -25,6 +25,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		findViewById(R.id.btn_encrypt).setOnClickListener(this);
 		findViewById(R.id.btn_decrypt).setOnClickListener(this);
 		findViewById(R.id.btn_avaliable).setOnClickListener(this);
+		findViewById(R.id.btn_encrypt_file).setOnClickListener(this);
+		findViewById(R.id.btn_decrypt_file).setOnClickListener(this);
 		et_input = findViewById(R.id.et_input);
 
 		// 测试一段长文本
@@ -34,11 +36,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 	@Override
 	public void onClick(View view) {
+		Bitmap bitmap_encrypt = BitmapFactory.decodeResource(getResources(), R.raw.meinv);
 		switch (view.getId()) {
 			case R.id.btn_encrypt:
 				String text = et_input.getText().toString();
 				// init
-				Bitmap bitmap_encrypt = BitmapFactory.decodeResource(getResources(), R.raw.meinv);
 				ImageManager.getInstance().encrypt(text, bitmap_encrypt, path, new ResultCallback() {
 					@Override
 					public void done(File imageFile) {
@@ -57,9 +59,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
 				});
 				break;
 			case R.id.btn_avaliable:
-				Bitmap tempBitmap = BitmapFactory.decodeResource(getResources(),R.raw.meinv);
-				int size = ImageManager.getInstance().avaliableByteSize(tempBitmap);// 可写字节数
+				int size = ImageManager.getInstance().avaliableByteSize(bitmap_encrypt);// 可写字节数
 				Toast.makeText(this, "可写大小: " + size + " 个byte", Toast.LENGTH_SHORT).show();
+				break;
+			case R.id.btn_encrypt_file:
+
+				ImageManager.getInstance().encrypt();
+				break;
+			case R.id.btn_decrypt_file:
+
 				break;
 		}
 	}

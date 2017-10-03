@@ -15,7 +15,7 @@ public class FileUtils {
 
     public static String readRaw(Resources resources,int rawId){
         try {
-            InputStream inputStream = resources.openRawResource(R.raw.test);
+            InputStream inputStream = resources.openRawResource(rawId);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line = "";
             StringBuffer buffer = new StringBuffer();

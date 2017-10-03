@@ -23,13 +23,13 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/btn_encrypt"
-            android:text="加密"
+            android:text="加密文字 "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btn_decrypt"
-            android:text="解密"
+            android:text="解密文字"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Button
@@ -37,6 +37,24 @@
             android:text="可写大小"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
 
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_encrypt_file"
+            android:text="加密文件 "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_decrypt_file"
+            android:text="解密文件"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </LinearLayout>

@@ -58,8 +58,8 @@ public class ImageManager {
         return instance;
     }
 
-    public native int doEncrypt(Bitmap bitmap,byte[] header,byte[] data);
-    public native byte[] doDecrypt(Bitmap bitmap, int offset, int length);
+    private native int doEncrypt(Bitmap bitmap,byte[] header,byte[] data);
+    private native byte[] doDecrypt(Bitmap bitmap, int offset, int length);
 
     public void encrypt(String message, Bitmap inBitmap, String savePath, Callback callback) {
         encrypt(message.getBytes(),inBitmap,savePath,callback);
