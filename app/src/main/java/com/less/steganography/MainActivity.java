@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.less.imagemanager.ByteArrayCallback;
 import com.less.imagemanager.ImageManager;
 import com.less.imagemanager.ResultCallback;
 import com.less.imagemanager.StringCallback;
@@ -15,7 +17,7 @@ import com.less.imagemanager.StringCallback;
 import java.io.File;
 
 public class MainActivity extends Activity implements View.OnClickListener {
-	private String path = "/sdcard/test.png";
+	private String outEncryptImg = Environment.getExternalStorageDirectory().getAbsolutePath() + "/encrypt.png";
 	private EditText et_input ;
 
 	@Override
@@ -30,7 +32,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		et_input = findViewById(R.id.et_input);
 
 		// 测试一段长文本
-		String text = FileUtils.readRaw(getResources(),R.raw.test);
+		String text = FileUtils.readRawString(getResources(),R.raw.msg);
 		et_input.setText(text);
 	}
 
@@ -41,7 +43,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 			case R.id.btn_encrypt:
 				String text = et_input.getText().toString();
 				// init
-				ImageManager.getInstance().encrypt(text, bitmap_encrypt, path, new ResultCallback() {
+				ImageManager.getInstance().encrypt(text, bitmap_encrypt, outEncryptImg, new ResultCallback() {
 					@Override
 					public void done(File imageFile) {
 						Toast.makeText(MainActivity.this, "加密完成-> " + imageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
@@ -49,8 +51,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 				});
 				break;
 			case R.id.btn_decrypt:
-				Bitmap bitmap_decrypt = BitmapFactory.decodeFile(path);
-				ImageManager.getInstance().decrypt(bitmap_decrypt, new StringCallback() {
+				Bitmap bitmap_decrypt1 = BitmapFactory.decodeFile(outEncryptImg);
+				ImageManager.getInstance().decrypt(bitmap_decrypt1, new StringCallback() {
 					@Override
 					public void done(String message) {
 						et_input.setText("Success:->" + message);
@@ -63,11 +65,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
 				Toast.makeText(this, "可写大小: " + size + " 个byte", Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.btn_encrypt_file:
-
-				ImageManager.getInstance().encrypt();
+				byte[] data = FileUtils.readRawData(getResources(), R.raw.file);
+				ImageManager.getInstance().encrypt(data, bitmap_encrypt, outEncryptImg, new ResultCallback() {
+					@Override
+					public void done(File imageFile) {
+						Toast.makeText(MainActivity.this, "加密完成-> " + imageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+					}
+				});
 				break;
 			case R.id.btn_decrypt_file:
-
+				Bitmap bitmap_decrypt2 = BitmapFactory.decodeFile(outEncryptImg);
+				ImageManager.getInstance().decrypt(bitmap_decrypt2, new ByteArrayCallback() {
+					@Override
+					public void done(byte [] data) {
+						String destPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/destFile.txt";
+						FileUtils.writeData(data,destPath);
+						Toast.makeText(MainActivity.this, "解密完成 => Save to " + destPath, Toast.LENGTH_SHORT).show();
+					}
+				});
 				break;
 		}
 	}
