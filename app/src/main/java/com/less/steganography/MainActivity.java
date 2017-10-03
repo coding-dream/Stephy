@@ -43,7 +43,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 	@Override
 	public void onClick(View view) {
-		Bitmap bitmap_encrypt = BitmapFactory.decodeResource(getResources(), R.raw.meinv);
+		Bitmap bitmap_encrypt = BitmapFactory.decodeResource(getResources(), R.raw.hide);
 		switch (view.getId()) {
 			case R.id.btn_encrypt:
 				String text = et_input.getText().toString();

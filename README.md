@@ -10,16 +10,26 @@
 项目加密和解密部分均由NDK优化，数据由Gzip和3DES处理后加密，所以加密性和隐匿性极高，请保存好
 3DES的秘钥,否则将无法解密。核心NDK部分源码未开源，但so库已编译好，直接使用即可。
 
-### 创建秘钥
+### 原理
+空间域隐写技术是最容易实现的一种方式，通过直接修改图像的最低有效位(LSB)隐藏数据。
+图片一般分为黑白和彩色，其中黑白图像的每个像素由8bit(1byte)组成，而彩色图片则由
+ARGB(32bit)组成,A(8bit),R(8bit),G(8bit),B(8bit),通过修改RGB的最低有效位，在视觉
+上是无法察觉的。
+你知道这张图片里面藏着什么信息吗?
+
+![](screenshots/hide.jpg)
+
+### 用法
+创建秘钥
 ```
 ImageManager.createKey();
 ```
-### 设置秘钥(可选)
+设置秘钥(可选)
 ```
 ImageManager.getInstance().setKey(secretKey);
 ```
 
-### 加密字符串
+加密字符串
 ```
 ImageManager.getInstance().encrypt(text, bitmap_encrypt, outEncryptImg, new ResultCallback() {
     @Override
@@ -28,7 +38,7 @@ ImageManager.getInstance().encrypt(text, bitmap_encrypt, outEncryptImg, new Resu
     }
 });
 ```
-### 加密文件
+加密文件
 ```
 byte[] data = FileUtils.readRawData(getResources(), R.raw.file);
 ImageManager.getInstance().encrypt(data, bitmap_encrypt, outEncryptImg, new ResultCallback() {
@@ -38,7 +48,7 @@ ImageManager.getInstance().encrypt(data, bitmap_encrypt, outEncryptImg, new Resu
     }
 });
 ```
-### 解密字符串
+解密字符串
 ```
 Bitmap bitmap_decrypt = BitmapFactory.decodeFile(outEncryptImg);
 ImageManager.getInstance().decrypt(bitmap_decrypt, new StringCallback() {
@@ -51,7 +61,7 @@ ImageManager.getInstance().decrypt(bitmap_decrypt, new StringCallback() {
 
 ```
 
-### 解密文件
+解密文件
 ```
 Bitmap bitmap_decrypt = BitmapFactory.decodeFile(outEncryptImg);
 ImageManager.getInstance().decrypt(bitmap_decrypt, new ByteArrayCallback() {
@@ -64,3 +74,17 @@ ImageManager.getInstance().decrypt(bitmap_decrypt, new ByteArrayCallback() {
 });
 ```
 
+### License
+    Copyright 2017 wangli
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+ 
+        http://www.apache.org/licenses/LICENSE-2.0
+ 
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
