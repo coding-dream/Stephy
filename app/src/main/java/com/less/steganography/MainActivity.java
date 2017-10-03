@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 				ImageManager.getInstance().encrypt(text, bitmap_encrypt, outEncryptImg, new ResultCallback() {
 					@Override
 					public void done(File imageFile) {
-						Toast.makeText(MainActivity.this, "加密完成-> " + imageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+						toast("encrypt success ==> %s",imageFile.getAbsolutePath());
 					}
 				});
 				break;
@@ -55,21 +55,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
 				ImageManager.getInstance().decrypt(bitmap_decrypt1, new StringCallback() {
 					@Override
 					public void done(String message) {
-						et_input.setText("Success:->" + message);
-						Toast.makeText(MainActivity.this, "解密: " + message, Toast.LENGTH_SHORT).show();
+						et_input.setText("Success: ==> " + message);
+						toast("decrypt success ==> %s",message);
 					}
 				});
 				break;
 			case R.id.btn_avaliable:
 				int size = ImageManager.getInstance().avaliableByteSize(bitmap_encrypt);// 可写字节数
-				Toast.makeText(this, "可写大小: " + size + " 个byte", Toast.LENGTH_SHORT).show();
+				toast("avliable size ==> %d(byte)",size);
 				break;
 			case R.id.btn_encrypt_file:
 				byte[] data = FileUtils.readRawData(getResources(), R.raw.file);
 				ImageManager.getInstance().encrypt(data, bitmap_encrypt, outEncryptImg, new ResultCallback() {
 					@Override
 					public void done(File imageFile) {
-						Toast.makeText(MainActivity.this, "加密完成-> " + imageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+						toast("encrypt success ==> Save %s",imageFile.getAbsolutePath());
 					}
 				});
 				break;
@@ -80,10 +80,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
 					public void done(byte [] data) {
 						String destPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/destFile.txt";
 						FileUtils.writeData(data,destPath);
-						Toast.makeText(MainActivity.this, "解密完成 => Save to " + destPath, Toast.LENGTH_SHORT).show();
+						toast("decrypt success ==> Save %s",destPath);
 					}
 				});
 				break;
 		}
+	}
+
+	public void toast(String format,Object ... params){
+		Toast.makeText(MainActivity.this, String.format(format,params), Toast.LENGTH_SHORT).show();
 	}
 }

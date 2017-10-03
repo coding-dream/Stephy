@@ -45,8 +45,9 @@ public class ImageManager {
     }
 
     public ImageManager(){
-        base64SecretKey = DESedeCoder.initKey();
+        base64SecretKey = "OBUlShoEx9blc6TLdQubYVKF02TCRXpb";
     }
+
     public static ImageManager getInstance(){
         if (instance == null) {
             synchronized (ImageManager.class) {
@@ -86,7 +87,6 @@ public class ImageManager {
 
                 int result = doEncrypt(outBitmap,header,data); // jni 优化
                 if (result == 1) {
-                    L.d("NDK 回调成功！");
                     save(savePath,outBitmap,callback);
                 }
 
