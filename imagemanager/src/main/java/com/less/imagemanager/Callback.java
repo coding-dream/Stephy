@@ -5,5 +5,7 @@ package com.less.imagemanager;
  */
 
 public interface Callback<T> {
+    T parseData(byte[] data);
+
     void done(T t);
 }

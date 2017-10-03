@@ -16,8 +16,6 @@ import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import static android.R.id.message;
 import static com.less.imagemanager.util.Bytes.bytesToLong;
 
 /**
@@ -88,7 +86,7 @@ public class ImageManager {
 
                 int result = doEncrypt(outBitmap,header,data); // jni 优化
                 if (result == 1) {
-                    L.d("JNI 回调成功！");
+                    L.d("NDK 回调成功！");
                     save(savePath,outBitmap,callback);
                 }
 
@@ -135,12 +133,12 @@ public class ImageManager {
                 int len = (int) bytesToLong(Arrays.copyOfRange(header, 2, HEADER_SIZE - 2));//  取出文本的长度信息。
                 byte[] body = doDecrypt(bitmap, HEADER_SIZE, len);
                 body = DESedeCoder.decrypt(body, base64SecretKey);// 解密数据
-                final byte[] data = Zips.deCompress(body);// 解压缩数据
-
+                byte[] data = Zips.deCompress(body);// 解压缩数据
+                final Object t = callback.parseData(data);
                 executorUI.execute(new Runnable() {
                     @Override
                     public void run() {
-                        callback.done(new String(data));
+                        callback.done(t);
                     }
                 });
             }
@@ -152,6 +150,7 @@ public class ImageManager {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             outBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            byteArrayOutputStream.close();
 
             final File file = new File(path);
             file.createNewFile();

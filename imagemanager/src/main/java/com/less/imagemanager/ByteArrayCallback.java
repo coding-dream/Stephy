@@ -6,5 +6,10 @@ package com.less.imagemanager;
 
 public abstract class ByteArrayCallback implements Callback<byte[]>{
 
+    @Override
+    public byte[] parseData(byte[] data) {
+        return data;
+    }
+
     public abstract void done(byte[] bytes);
 }

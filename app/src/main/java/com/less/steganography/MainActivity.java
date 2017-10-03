@@ -8,9 +8,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.less.imagemanager.FileCallback;
 import com.less.imagemanager.ImageManager;
+import com.less.imagemanager.ResultCallback;
 import com.less.imagemanager.StringCallback;
+
 import java.io.File;
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -38,7 +39,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 				String text = et_input.getText().toString();
 				// init
 				Bitmap bitmap_encrypt = BitmapFactory.decodeResource(getResources(), R.raw.meinv);
-				ImageManager.getInstance().encrypt(text, bitmap_encrypt, path, new FileCallback() {
+				ImageManager.getInstance().encrypt(text, bitmap_encrypt, path, new ResultCallback() {
 					@Override
 					public void done(File imageFile) {
 						Toast.makeText(MainActivity.this, "加密完成-> " + imageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
