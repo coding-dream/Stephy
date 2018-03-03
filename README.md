@@ -1,10 +1,11 @@
 
 # Steganography
 
-更新
+更新 18/3/3
+
 ===================================================== 
 
->tips 
+> tips: 
 如果你看到了这个库，那么恭喜你，README曾经删除过，so库源码也曾被删除并重建此项目，这也是我经过认真思考过的项目，
 也许是国内唯一一个Java版本的图像隐写术项目。
 我不是一个纯粹的开源爱好者，开源便意味着盗版和贬值，如果你喜欢，请参考思路开发优化自己的版本，请勿fork，请勿滥用。
@@ -27,11 +28,7 @@ ARGB(32bit)组成,`A(8bit),R(8bit),G(8bit),B(8bit)`,通过修改RGB的最低有�
 上是无法察觉的。
 你知道这张图片里面藏着什么信息吗?
 
-```
 ![](screenshots/hide.jpg)
-```
-
-![image.png](http://upload-images.jianshu.io/upload_images/1281543-69c9cb03531384eb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 用法
 1. 创建秘钥
